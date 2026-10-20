@@ -1,0 +1,22 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Create .env file for tests
+      run: |
+        echo "POSTGRES_DB=georide_db" >> .env
+        echo "POSTGRES_USER=myuser" >> .env
+        echo "POSTGRES_PASSWORD=mypassword" >> .env
+
+    - name: Build and Test Docker Compose Services
+      run: docker compose up --build -d
