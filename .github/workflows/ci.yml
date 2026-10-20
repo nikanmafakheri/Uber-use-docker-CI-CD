@@ -1,9 +1,8 @@
-
 name: CI Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
 
 jobs:
   build-and-test:
@@ -19,6 +18,8 @@ jobs:
         echo "POSTGRES_USER=myuser" >> .env
         echo "POSTGRES_PASSWORD=mypassword" >> .env
 
+    - name: Fix Loki data permissions
+      run: sudo chmod -R 777 loki/data
+
     - name: Build and Test Docker Compose Services
       run: docker compose up --build -d
-
